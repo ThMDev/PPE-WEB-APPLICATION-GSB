@@ -1,0 +1,112 @@
+<?php
+/**
+ * Vue choix visiteur
+ *
+ * PHP Version 7
+ *
+ * @category  PPE
+ * @package   GSB
+ * @author    Réseau CERTA <contact@reseaucerta.org>
+ * @author    José GIL <jgil@ac-nice.fr>
+ * @author    Thomas Marioli
+ * @copyright 2017 Réseau CERTA
+ * @license   Réseau CERTA
+ * @version   GIT: <0>
+ * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
+ */
+
+if ($estConnecte && estComptable()) {
+    if (!isset($lesFichesDisponibles)) {
+        ?>
+        <div class="row">
+            <div class="col-md-4">
+                <h3>Sélectionner un visiteur : </h3>
+            </div>
+            <div class="col-md-4">
+                <form action="index.php?uc=etatFraisVisiteurs&action=selectionnerMois" 
+                      method="post" role="form">
+                    <div class="form-group">
+                        <select id="lstVisiteur" name="lstVisiteur" class="form-control">
+                            <?php
+                            foreach ($lesUtilisateurs as $unUtilisateur) {
+                                $id = $unUtilisateur['idVisiteur'];
+                                $nom = $unUtilisateur['nomVisiteur'];
+                                $prenom = $unUtilisateur['prenomVisiteur'];
+                                ?>
+                                <option value="<?php echo $id ?>">
+                                    <?php echo $nom . ' ' . $prenom ?> </option>
+                                    <?php
+                            }
+                            ?>    
+
+                        </select>
+                    </div>
+                    <input id="ok" type="submit" value="Valider" class="btn btn-success" 
+                           role="button">
+                    <input id="annuler" type="reset" value="Effacer" class="btn btn-danger" 
+                           role="button">
+                </form>
+            </div>
+        </div>
+        <?php
+    } else if (isset($lesFichesDisponibles)) {
+        ?>
+        <div class="row">                        
+            <div class="col-md-4">
+                <h3>Sélectionner un Mois : </h3>
+            </div>
+            <div class="col-md-4">
+                <form action="index.php?uc=etatFraisVisiteurs&action=voirFrais" 
+                      method="post" role="form">
+                    <div class="form-group">
+
+                        <select id="lstVisiteur" name="lstVisiteur" class="form-control">
+                            <?php
+                                $id = $utilisateur['idVisiteur'];
+                                $nom = $utilisateur['nomVisiteur'];
+                                $prenom = $utilisateur['prenomVisiteur'];
+                                ?>
+                                    <option selected value="<?php echo $id ?>">
+                                    <?php echo $nom . ' ' . $prenom ?> </option>
+                        </select>
+
+                        <select id="lstMois" name="lstMois" class="form-control">
+                            <?php
+                            foreach ($lesFichesDisponibles as $uneFicheDisponible) {
+                                $mois = $uneFicheDisponible['mois'];
+                                $numAnnee = substr($mois, 0,4);
+                                $numMois = substr($mois, 4,2);
+                                if ($mois == $_SESSION['moisSelectionne'] ) {
+                                ?>
+                                <option selected value="<?php echo $mois ?>">
+                                    <?php echo $numMois . '/' . $numAnnee ?> </option>
+                                    <?php
+                                } else {
+                                    ?>
+                                    <option value="<?php echo $mois ?>">
+                                    <?php echo $numMois . '/' . $numAnnee ?> </option>
+                                <?php
+                                }
+                            }
+                            ?>    
+
+                        </select>
+                        <input type="hidden" name="hdVisiteurSelectionneActif" value="<?php
+                                echo $visiteurSelectionne;
+                            ?>">
+                    </div>
+                    <input id="ok" type="submit" value="Valider" class="btn btn-success" 
+                           role="button">
+                    <input id="annuler" type="reset" value="Effacer" class="btn btn-danger" 
+                           role="button">
+                    <a href="index.php?uc=etatFraisVisiteurs&action=selectionnerVisiteur" class="btn btn-danger">
+                        Sélectionner un autre visiteur
+                    </a>
+                </form>
+            </div>
+        </div>
+
+        <?php
+    }
+}
+?>
