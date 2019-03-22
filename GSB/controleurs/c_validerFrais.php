@@ -24,7 +24,10 @@ $moisSelectionne = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
 $numAnneeSelectionne = substr($moisSelectionne, 0, 4);
 $numMoisSelectionne = substr($moisSelectionne, 4, 2);
 if (estConnecte() && estComptable()) {
-    if (estDateCampagneValidation() || 1 == 1) {
+    if (estDateCampagneValidation() /** @TODO supprimer ou ajouter la condition 
+                                        // ajout d'une condition vraie pour ne pas limiter aux dates de campagne de validation
+                       || 1 == 1
+                                        */) {
         $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
         switch ($action) {
             case "selectionnerVisiteur":
