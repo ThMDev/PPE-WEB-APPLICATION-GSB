@@ -56,6 +56,11 @@ if (estConnecte() && estComptable()) {
                         ajouterErreur('Aucune fiche de frais ce mois pour ce visiteur.');
                         include 'vues/v_erreurs.php';
                         include 'vues/v_choixUtilisateurs.php';
+                        // vérification de la validation effective ou non
+                    } else if ($infosFichesFrais['idEtat'] == "VA") {
+                        ajouterErreur('La fiche de frais a déjà été validée.');
+                        include 'vues/v_erreurs.php';
+                        include 'vues/v_choixUtilisateurs.php';
                     } else {
                         $nbrJustificatifs = $infosFichesFrais['nbJustificatifs'];
                         include 'vues/v_choixUtilisateurs.php';
