@@ -355,15 +355,19 @@ class PdoGsb
         $requete = PdoGSB::$monPdo->prepare("SELECT libelle FROM lignefraishorsforfait WHERE lignefraishorsforfait.id = :id");
             $requete->bindParam(':id', $id, PDO::PARAM_INT);
             $requete->execute();
-            $nouveauLibelle = "REFUSE ".substr($requete->fetchColumn(), 0, 93);
-            $requetePrepare = PdoGSB::$monPdo->prepare(
-                'UPDATE lignefraishorsforfait '
-                . 'SET lignefraishorsforfait.libelle = :nouveaulibelle '
-                . 'WHERE lignefraishorsforfait.id = :id'
-            );
-            $requetePrepare->bindParam(':nouveaulibelle', $nouveauLibelle, PDO::PARAM_STR);
-            $requetePrepare->bindParam(':id', $id, PDO::PARAM_INT);
-            $requetePrepare->execute();
+            $result = $requete->fetchColumn();
+            // vérification d'un premier refus effectif ou non
+            if(strpos($result, "REFUSE ") === FALSE){
+                $nouveauLibelle = "REFUSE ".substr($result, 0, 93);
+                $requetePrepare = PdoGSB::$monPdo->prepare(
+                    'UPDATE lignefraishorsforfait '
+                    . 'SET lignefraishorsforfait.libelle = :nouveaulibelle '
+                    . 'WHERE lignefraishorsforfait.id = :id'
+                );
+                $requetePrepare->bindParam(':nouveaulibelle', $nouveauLibelle, PDO::PARAM_STR);
+                $requetePrepare->bindParam(':id', $id, PDO::PARAM_INT);
+                $requetePrepare->execute();
+            }
    
     }
     
